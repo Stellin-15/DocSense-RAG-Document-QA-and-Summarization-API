@@ -1,0 +1,2 @@
+# DocSense RAG Document QA and Summarization API
+DocSense is a production-grade retrieval-augmented generation (RAG) system designed to perform document-based question answering and summarization with high accuracy, low latency, and robust security. The project tackles common RAG challenges—hallucinations, citation gaps, latency spikes, and ingestion bottlenecks—by implementing a scalable backend pipeline optimized for real-world workloads.
