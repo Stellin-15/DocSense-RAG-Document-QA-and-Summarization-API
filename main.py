@@ -6,7 +6,7 @@ import json
 import requests
 from bs4 import BeautifulSoup
 from fastapi import FastAPI, UploadFile, File, HTTPException
-from pantic import BaseModel, HttpUrl
+from pydantic import BaseModel, HttpUrl
 from dotenv import load_dotenv
 
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings, Document
