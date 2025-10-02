@@ -1,0 +1,22 @@
+# File: docker-compose.yml
+
+version: '3.8'
+
+services:
+  # This is the name of our service
+  api:
+    # Build the Docker image from the Dockerfile in the current directory (.)
+    build: .
+    # Name the resulting container for easier management
+    container_name: docsense_api
+    # Forward port 8000 on the host machine to port 8000 in the container
+    ports:
+      - "8000:8000"
+    # Mount the current directory into the container's /app directory
+    # This enables hot-reloading: changes you make to your local code
+    # will immediately reflect inside the running container.
+    volumes:
+      - .:/app
+    # Load environment variables from the .env file in the current directory
+    env_file:
+      - .env

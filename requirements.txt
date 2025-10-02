@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+python-multipart
+llama-index
+openai
+pypdf
+python-dotenv
+llama-index-llms-gemini  
+llama-index-embeddings-gemini
