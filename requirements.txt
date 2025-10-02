@@ -1,9 +1,15 @@
+# For the web server
 fastapi
 uvicorn[standard]
 python-multipart
+
+# For the AI and RAG logic (LlamaIndex)
 llama-index
-openai
-pypdf
-python-dotenv
-llama-index-llms-gemini  
+llama-index-llms-gemini
 llama-index-embeddings-gemini
+
+# For reading PDF files
+pypdf
+
+# For loading our secret API key
+python-dotenv
