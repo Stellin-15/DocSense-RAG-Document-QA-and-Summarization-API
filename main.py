@@ -82,6 +82,7 @@ async def upload_document(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
+
 @app.post("/stream_query")
 async def stream_query_document(request: QueryRequest):
     """Asks a question and streams the answer back token-by-token with sources."""
@@ -103,13 +104,17 @@ async def stream_query_document(request: QueryRequest):
                 delta = StreamResponse(answer_delta=token)
                 yield f"data: {delta.json()}\n\n"
                 full_answer += token
-                await asyncio.sleep(0.01) # Small delay for the client
+                await asyncio.sleep(0.01)
 
             # Then, package and stream the final response with sources
             source_nodes = []
             for node in streaming_response.source_nodes:
+                # --- THIS IS THE FIX ---
+                # We use os.path.basename to get just the filename from the full path
+                clean_file_name = os.path.basename(node.metadata.get('file_name', 'N/A'))
+                
                 source_nodes.append(SourceNode(
-                    file_name=node.metadata.get('file_name', 'N/A'),
+                    file_name=clean_file_name,
                     text=node.get_content()
                 ))
             

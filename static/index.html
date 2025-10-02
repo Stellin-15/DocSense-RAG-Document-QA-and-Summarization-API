@@ -47,6 +47,7 @@
             color: var(--text-color);
             padding: 0.75rem;
             border-radius: 4px;
+            font-size: 1rem; /* Added for better visibility */
         }
         button {
             background-color: var(--primary-color);
@@ -57,8 +58,20 @@
             font-weight: bold;
             cursor: pointer;
             transition: opacity 0.2s;
+            font-size: 1rem; /* Added for consistency */
         }
         button:disabled { cursor: not-allowed; opacity: 0.5; }
+
+        /* --- UI FIX 1: Center the Upload Button --- */
+        #upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        #upload-button {
+            align-self: center; /* This centers the button */
+        }
+
         .status {
             margin-top: 1rem;
             text-align: center;
@@ -80,6 +93,17 @@
         .message { padding: 0.75rem; border-radius: 8px; max-width: 80%; }
         .user-message { background-color: var(--primary-color); color: var(--background-color); align-self: flex-end; }
         .bot-message { background-color: #2a2a2a; align-self: flex-start; white-space: pre-wrap; }
+        
+        /* --- UI FIX 2: Style the Chat Input Area --- */
+        .chat-input-area {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .chat-input-area input {
+            flex-grow: 1; /* Makes the input take up all available space */
+        }
+
         #sources-section { display: none; }
         .source {
             border-top: 1px solid var(--border-color);
@@ -115,7 +139,6 @@
             <p>Upload a document and ask it anything.</p>
         </header>
 
-        <!-- Upload Section -->
         <div class="card" id="upload-card">
             <h2>1. Upload Your Document</h2>
             <form id="upload-form">
@@ -128,19 +151,18 @@
             <div class="status" id="upload-status"></div>
         </div>
 
-        <!-- Chat Section -->
         <div class="card" id="chat-section">
             <h2>2. Ask a Question</h2>
             <div id="chat-box"></div>
             <form id="query-form">
-                <div class="form-group">
+                <!-- --- UI FIX 2: New HTML structure for the input --- -->
+                <div class="chat-input-area">
                     <input type="text" id="query-input" placeholder="Type your question here..." required>
+                    <button type="submit" id="query-button">Ask</button>
                 </div>
-                <button type="submit" id="query-button">Ask</button>
             </form>
         </div>
         
-        <!-- Sources Section -->
         <div class="card" id="sources-section">
             <h2>Sources</h2>
             <div id="sources-container"></div>
@@ -148,6 +170,7 @@
     </div>
 
 <script>
+    // --- The JavaScript code remains exactly the same ---
     const uploadForm = document.getElementById('upload-form');
     const fileInput = document.getElementById('file-input');
     const uploadButton = document.getElementById('upload-button');
@@ -162,7 +185,6 @@
     const sourcesSection = document.getElementById('sources-section');
     const sourcesContainer = document.getElementById('sources-container');
 
-    // --- 1. UPLOAD LOGIC ---
     uploadForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!fileInput.files.length) return;
@@ -195,17 +217,14 @@
         }
     });
 
-    // --- 2. QUERY LOGIC (STREAMING) ---
     queryForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const question = queryInput.value.trim();
         if (!question) return;
 
-        // Display user's question
         chatBox.innerHTML += `<div class="message user-message">${question}</div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
         
-        // Prepare for bot's response
         const botMessageDiv = document.createElement('div');
         botMessageDiv.className = 'message bot-message';
         botMessageDiv.innerHTML = '<div class="spinner"></div>';
@@ -233,7 +252,7 @@
             const decoder = new TextDecoder();
             let buffer = '';
             
-            botMessageDiv.innerHTML = ''; // Clear spinner
+            botMessageDiv.innerHTML = '';
 
             while (true) {
                 const { value, done } = await reader.read();
@@ -242,16 +261,16 @@
                 buffer += decoder.decode(value, { stream: true });
                 const lines = buffer.split('\n\n');
                 
-                buffer = lines.pop(); // Keep the last, potentially incomplete line
+                buffer = lines.pop();
 
                 for (const line of lines) {
                     if (line.startsWith('data: ')) {
                         const data = JSON.parse(line.substring(6));
 
-                        if (data.answer_delta) { // This is a token
+                        if (data.answer_delta) {
                             botMessageDiv.textContent += data.answer_delta;
                             chatBox.scrollTop = chatBox.scrollHeight;
-                        } else if (data.final_answer) { // This is the final object
+                        } else if (data.final_answer) {
                             displaySources(data.sources);
                         } else if (data.error) {
                             botMessageDiv.textContent = `Error: ${data.error}`;
@@ -259,7 +278,6 @@
                     }
                 }
             }
-
         } catch (error) {
             botMessageDiv.textContent = `Error: ${error.message}`;
         } finally {
@@ -282,7 +300,6 @@
             `;
         });
     }
-
 </script>
 </body>
 </html>
