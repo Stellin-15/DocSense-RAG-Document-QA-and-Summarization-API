@@ -17,8 +17,8 @@ from llama_index.embeddings.gemini import GeminiEmbedding
 from fastapi.responses import StreamingResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 
-# --- NEW: Import the smarter PDF reader from its new location ---
-from llama_index.readers.unstructured import UnstructuredReader
+# --- FINAL CORRECT IMPORT for the PyMuPDF reader from the 'file' package ---
+from llama_index.readers.file import PyMuPDFReader
 
 
 load_dotenv()
@@ -61,12 +61,12 @@ async def upload_document(file: UploadFile = File(...)):
     
     try:
         def load_and_index():
-            print("--- Starting indexing with ADVANCED parser... ---")
+            print("--- Starting indexing with the reliable PyMuPDF parser... ---")
             
-            # We explicitly tell the reader to use the UnstructuredReader for PDF files.
+            # --- Using the lightweight and effective PyMuPDFReader ---
             reader = SimpleDirectoryReader(
                 input_dir=data_path,
-                file_extractor={".pdf": UnstructuredReader()}
+                file_extractor={".pdf": PyMuPDFReader()}
             )
             documents = reader.load_data()
             
@@ -79,7 +79,7 @@ async def upload_document(file: UploadFile = File(...)):
         index = await asyncio.wait_for(task, timeout=120.0)
         return {"status": "success", "message": f"File '{file.filename}' uploaded and indexed."}
     except asyncio.TimeoutError:
-        raise HTTPException(status_code=408, detail="Document processing timed out. The file may be extremely large.")
+        raise HTTPException(status_code=408, detail="Document processing timed out.")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
@@ -140,4 +140,4 @@ async def stream_query_document(request: QueryRequest):
             error_response = {"error": f"An error occurred during streaming: {str(e)}"}
             yield f"data: {json.dumps(error_response)}\n\n"
 
-    return StreamingResponse(event_stream(), media_type="text/event-stream")
+    return StreamingResponse(event_stream(), media_type="text-event-stream")
