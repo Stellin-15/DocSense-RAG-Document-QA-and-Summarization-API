@@ -1,4 +1,3 @@
-<!-- File: static/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,121 +13,41 @@
             --text-secondary-color: #888;
             --border-color: #333;
         }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 2rem;
-            display: flex;
-            justify-content: center;
-        }
-        .container {
-            width: 100%;
-            max-width: 800px;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--background-color); color: var(--text-color); margin: 0; padding: 2rem; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 2rem; }
         header { text-align: center; }
         h1 { color: var(--primary-color); margin-bottom: 0.5rem;}
         header p { color: var(--text-secondary-color); margin-top: 0;}
-        .card {
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-        }
+        .card { background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; }
         .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
         label { font-weight: 500; }
-        input[type="file"], input[type="text"] {
-            background-color: var(--background-color);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 0.75rem;
-            border-radius: 4px;
-            font-size: 1rem; /* Added for better visibility */
-        }
-        button {
-            background-color: var(--primary-color);
-            color: var(--background-color);
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            font-size: 1rem; /* Added for consistency */
-        }
+        input[type="file"], input[type="text"], input[type="url"] { background-color: var(--background-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 4px; font-size: 1rem; }
+        button { background-color: var(--primary-color); color: var(--background-color); border: none; padding: 0.75rem 1.5rem; border-radius: 4px; font-weight: bold; cursor: pointer; transition: opacity 0.2s; font-size: 1rem; }
         button:disabled { cursor: not-allowed; opacity: 0.5; }
+        
+        /* --- New Tab Styles --- */
+        .tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem; }
+        .tab-button { background: none; border: none; color: var(--text-secondary-color); padding: 1rem; cursor: pointer; font-size: 1rem; border-bottom: 2px solid transparent; }
+        .tab-button.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-        /* --- UI FIX 1: Center the Upload Button --- */
-        #upload-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        #upload-button {
-            align-self: center; /* This centers the button */
-        }
+        form { display: flex; flex-direction: column; gap: 1rem; }
+        form button { align-self: center; }
 
-        .status {
-            margin-top: 1rem;
-            text-align: center;
-            color: var(--text-secondary-color);
-            min-height: 20px;
-        }
+        .status { margin-top: 1rem; text-align: center; color: var(--text-secondary-color); min-height: 20px; }
         #chat-section { display: none; }
-        #chat-box {
-            height: 300px;
-            overflow-y: auto;
-            border: 1px solid var(--border-color);
-            padding: 1rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
+        #chat-box { height: 300px; overflow-y: auto; border: 1px solid var(--border-color); padding: 1rem; border-radius: 4px; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 1rem; }
         .message { padding: 0.75rem; border-radius: 8px; max-width: 80%; }
         .user-message { background-color: var(--primary-color); color: var(--background-color); align-self: flex-end; }
         .bot-message { background-color: #2a2a2a; align-self: flex-start; white-space: pre-wrap; }
-        
-        /* --- UI FIX 2: Style the Chat Input Area --- */
-        .chat-input-area {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        .chat-input-area input {
-            flex-grow: 1; /* Makes the input take up all available space */
-        }
-
+        .chat-input-area { display: flex; gap: 0.5rem; align-items: center; }
+        .chat-input-area input { flex-grow: 1; }
         #sources-section { display: none; }
-        .source {
-            border-top: 1px solid var(--border-color);
-            padding-top: 1rem;
-            margin-top: 1rem;
-        }
+        .source { border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: 1rem; }
         .source h4 { margin: 0 0 0.5rem 0; color: var(--primary-color); }
-        .source pre {
-            background-color: #2a2a2a;
-            padding: 1rem;
-            border-radius: 4px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            color: var(--text-secondary-color);
-            font-size: 0.8rem;
-        }
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(3, 218, 198, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1s ease-in-out infinite;
-            margin: 0 auto;
-        }
+        .source pre { background-color: #2a2a2a; padding: 1rem; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word; color: var(--text-secondary-color); font-size: 0.8rem; }
+        .spinner { width: 20px; height: 20px; border: 3px solid rgba(3, 218, 198, 0.3); border-radius: 50%; border-top-color: var(--primary-color); animation: spin 1s ease-in-out infinite; margin: 0 auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
@@ -136,26 +55,46 @@
     <div class="container">
         <header>
             <h1>DocSense Q&A</h1>
-            <p>Upload a document and ask it anything.</p>
+            <p>Upload a document or scrape a URL, then ask it anything.</p>
         </header>
 
-        <div class="card" id="upload-card">
-            <h2>1. Upload Your Document</h2>
-            <form id="upload-form">
-                <div class="form-group">
-                    <label for="file-input">Choose a PDF file:</label>
-                    <input type="file" id="file-input" name="file" accept=".pdf" required>
-                </div>
-                <button type="submit" id="upload-button">Upload and Index</button>
-            </form>
-            <div class="status" id="upload-status"></div>
+        <div class="card" id="ingest-card">
+            <h2>1. Ingest Your Knowledge Source</h2>
+            <!-- New Tab Navigation -->
+            <div class="tabs">
+                <button class="tab-button active" onclick="openTab(event, 'upload')">Upload File</button>
+                <button class="tab-button" onclick="openTab(event, 'scrape')">Scrape URL</button>
+            </div>
+
+            <!-- Upload Tab -->
+            <div id="upload" class="tab-content active">
+                <form id="upload-form">
+                    <div class="form-group">
+                        <label for="file-input">Choose a PDF file:</label>
+                        <input type="file" id="file-input" name="file" accept=".pdf" required>
+                    </div>
+                    <button type="submit" id="upload-button">Upload and Index</button>
+                </form>
+            </div>
+            
+            <!-- Scrape Tab -->
+            <div id="scrape" class="tab-content">
+                <form id="scrape-form">
+                    <div class="form-group">
+                        <label for="url-input">Enter a URL to scrape:</label>
+                        <input type="url" id="url-input" placeholder="https://example.com/article" required>
+                    </div>
+                    <button type="submit" id="scrape-button">Scrape and Index</button>
+                </form>
+            </div>
+
+            <div class="status" id="ingest-status"></div>
         </div>
 
         <div class="card" id="chat-section">
             <h2>2. Ask a Question</h2>
             <div id="chat-box"></div>
             <form id="query-form">
-                <!-- --- UI FIX 2: New HTML structure for the input --- -->
                 <div class="chat-input-area">
                     <input type="text" id="query-input" placeholder="Type your question here..." required>
                     <button type="submit" id="query-button">Ask</button>
@@ -170,55 +109,82 @@
     </div>
 
 <script>
-    // --- The JavaScript code remains exactly the same ---
-    const uploadForm = document.getElementById('upload-form');
-    const fileInput = document.getElementById('file-input');
-    const uploadButton = document.getElementById('upload-button');
-    const uploadStatus = document.getElementById('upload-status');
+    const ingestStatus = document.getElementById('ingest-status');
     const chatSection = document.getElementById('chat-section');
     
-    const queryForm = document.getElementById('query-form');
-    const queryInput = document.getElementById('query-input');
-    const queryButton = document.getElementById('query-button');
-    const chatBox = document.getElementById('chat-box');
+    // --- Tab Logic ---
+    function openTab(evt, tabName) {
+        const tabcontent = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        const tablinks = document.getElementsByClassName("tab-button");
+        for (let i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+    // Initialize first tab
+    document.querySelector('.tab-button').click();
 
-    const sourcesSection = document.getElementById('sources-section');
-    const sourcesContainer = document.getElementById('sources-container');
-
+    // --- Upload Logic ---
+    const uploadForm = document.getElementById('upload-form');
     uploadForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const fileInput = document.getElementById('file-input');
         if (!fileInput.files.length) return;
 
-        uploadStatus.innerHTML = '<div class="spinner"></div><p>Indexing document... this can take a minute.</p>';
-        uploadButton.disabled = true;
-
+        ingestStatus.innerHTML = '<div class="spinner"></div><p>Indexing document...</p>';
+        
         const formData = new FormData();
         formData.append('file', fileInput.files[0]);
 
         try {
-            const response = await fetch('/upload', {
-                method: 'POST',
-                body: formData,
-            });
-
+            const response = await fetch('/upload', { method: 'POST', body: formData });
             const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.detail || 'Upload failed');
-            }
-
-            uploadStatus.textContent = result.message;
+            if (!response.ok) throw new Error(result.detail);
+            ingestStatus.textContent = result.message;
             chatSection.style.display = 'block';
-
         } catch (error) {
-            uploadStatus.textContent = `Error: ${error.message}`;
-        } finally {
-            uploadButton.disabled = false;
+            ingestStatus.textContent = `Error: ${error.message}`;
         }
     });
 
+    // --- Scrape Logic ---
+    const scrapeForm = document.getElementById('scrape-form');
+    scrapeForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const urlInput = document.getElementById('url-input');
+        const url = urlInput.value.trim();
+        if (!url) return;
+
+        ingestStatus.innerHTML = '<div class="spinner"></div><p>Scraping and indexing URL...</p>';
+
+        try {
+            const response = await fetch('/scrape_and_index', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: url })
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.detail);
+            ingestStatus.textContent = result.message;
+            chatSection.style.display = 'block';
+        } catch (error) {
+            ingestStatus.textContent = `Error: ${error.message}`;
+        }
+    });
+
+    // --- Query Logic (unchanged) ---
+    const queryForm = document.getElementById('query-form');
+    const chatBox = document.getElementById('chat-box');
+    const sourcesSection = document.getElementById('sources-section');
+    const sourcesContainer = document.getElementById('sources-container');
+    
     queryForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const queryInput = document.getElementById('query-input');
         const question = queryInput.value.trim();
         if (!question) return;
 
@@ -231,7 +197,6 @@
         chatBox.appendChild(botMessageDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
 
-        queryButton.disabled = true;
         queryInput.value = '';
         sourcesSection.style.display = 'none';
         sourcesContainer.innerHTML = '';
@@ -243,34 +208,26 @@
                 body: JSON.stringify({ question: question }),
             });
 
-            if (!response.ok) {
-                const errorResult = await response.json();
-                throw new Error(errorResult.detail || 'Failed to get stream response.');
-            }
+            if (!response.ok) throw new Error((await response.json()).detail);
 
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
             let buffer = '';
-            
             botMessageDiv.innerHTML = '';
 
             while (true) {
                 const { value, done } = await reader.read();
                 if (done) break;
-
                 buffer += decoder.decode(value, { stream: true });
                 const lines = buffer.split('\n\n');
-                
                 buffer = lines.pop();
-
                 for (const line of lines) {
                     if (line.startsWith('data: ')) {
                         const data = JSON.parse(line.substring(6));
-
                         if (data.answer_delta) {
                             botMessageDiv.textContent += data.answer_delta;
                             chatBox.scrollTop = chatBox.scrollHeight;
-                        } else if (data.final_answer) {
+                         } else if (data.final_answer) {
                             displaySources(data.sources);
                         } else if (data.error) {
                             botMessageDiv.textContent = `Error: ${data.error}`;
@@ -280,17 +237,13 @@
             }
         } catch (error) {
             botMessageDiv.textContent = `Error: ${error.message}`;
-        } finally {
-            queryButton.disabled = false;
         }
     });
     
     function displaySources(sources) {
         if (!sources || sources.length === 0) return;
-        
         sourcesSection.style.display = 'block';
         sourcesContainer.innerHTML = '';
-
         sources.forEach((source, index) => {
             sourcesContainer.innerHTML += `
                 <div class="source">
