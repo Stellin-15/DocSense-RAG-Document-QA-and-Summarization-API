@@ -1,3 +1,5 @@
+# File: main.py
+
 import os
 import shutil
 import asyncio
@@ -9,15 +11,15 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from pydantic import BaseModel, HttpUrl
 from dotenv import load_dotenv
 
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings, Document
+from llama_index.core import VectorStoreIndex, Settings, Document, SimpleDirectoryReader
 from llama_index.llms.gemini import Gemini as GeminiLLM
 from llama_index.embeddings.gemini import GeminiEmbedding
 from fastapi.responses import StreamingResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 
-# --- NEW: Import the smarter PDF reader ---
-from llama_index.core.readers import SimpleDirectoryReader
-from llama_index.readers.file import UnstructuredReader
+# --- NEW: Import the smarter PDF reader from its new location ---
+from llama_index.readers.unstructured import UnstructuredReader
+
 
 load_dotenv()
 Settings.llm = GeminiLLM(model_name="models/gemini-flash-latest")
@@ -61,7 +63,6 @@ async def upload_document(file: UploadFile = File(...)):
         def load_and_index():
             print("--- Starting indexing with ADVANCED parser... ---")
             
-            # --- THE UPGRADE IS HERE ---
             # We explicitly tell the reader to use the UnstructuredReader for PDF files.
             reader = SimpleDirectoryReader(
                 input_dir=data_path,
@@ -75,7 +76,7 @@ async def upload_document(file: UploadFile = File(...)):
             return instance_index
 
         task = asyncio.to_thread(load_and_index)
-        index = await asyncio.wait_for(task, timeout=120.0) # Increased timeout slightly for the slower, smarter parser
+        index = await asyncio.wait_for(task, timeout=120.0)
         return {"status": "success", "message": f"File '{file.filename}' uploaded and indexed."}
     except asyncio.TimeoutError:
         raise HTTPException(status_code=408, detail="Document processing timed out. The file may be extremely large.")
@@ -85,7 +86,6 @@ async def upload_document(file: UploadFile = File(...)):
 
 @app.post("/scrape_and_index")
 async def scrape_and_index_url(request: ScrapeRequest):
-    # This endpoint for URL scraping remains the same
     global index
     url = str(request.url)
     try:
@@ -109,7 +109,6 @@ async def scrape_and_index_url(request: ScrapeRequest):
 
 @app.post("/stream_query")
 async def stream_query_document(request: QueryRequest):
-    # This endpoint remains the same
     global index
     if index is None:
         raise HTTPException(status_code=400, detail="No document indexed. Please upload or scrape first.")
