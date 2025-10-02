@@ -1,17 +1,13 @@
 # File: .gitignore
 
-# Python
-__pycache__/
-*.pyc
+# Ignore the virtual environment folder
+venv/
+
+# Ignore the secret .env file
 .env
 
-# Uploaded Data
+# Ignore uploaded files
 data/
 
-# IDE files
-.vscode/
-.idea/
-
-# Docker
-.dockerignore
-docker-compose.override.yml
+# Ignore Python cache files
+__pycache__/
